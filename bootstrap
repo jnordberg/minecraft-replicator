@@ -1,0 +1,17 @@
+
+fs.makeDir('lib')
+fs.makeDir('state')
+
+fs.copy('disk/lib/class.lua', 'lib/class.lua')
+fs.copy('disk/lib/items.lua', 'lib/items.lua')
+fs.copy('disk/lib/serpent.lua', 'lib/serpent.lua')
+fs.copy('disk/lib/utils.lua', 'lib/utils.lua')
+fs.copy('disk/startup', 'bootstrap')
+fs.copy('disk/replicator', 'startup')
+fs.copy('disk/state/name.txt', 'state/name.txt')
+
+local h = fs.open('state/name.txt', 'r')
+os.setComputerLabel(h.readLine())
+h.close()
+
+shell.run('startup')
