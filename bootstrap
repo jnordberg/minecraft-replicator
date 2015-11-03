@@ -1,14 +1,28 @@
 
+local function copyFile(target, destination)
+  if fs.exists(destination) then
+    fs.delete(destination)
+  end
+  fs.copy(target, destination)
+end
+
+local files = {
+  'lib/class.lua',
+  'lib/items.lua',
+  'lib/serpent.lua',
+  'lib/utils.lua',
+  'state/name.txt',
+}
+
 fs.makeDir('lib')
 fs.makeDir('state')
 
-fs.copy('disk/lib/class.lua', 'lib/class.lua')
-fs.copy('disk/lib/items.lua', 'lib/items.lua')
-fs.copy('disk/lib/serpent.lua', 'lib/serpent.lua')
-fs.copy('disk/lib/utils.lua', 'lib/utils.lua')
-fs.copy('disk/startup', 'bootstrap')
-fs.copy('disk/replicator', 'startup')
-fs.copy('disk/state/name.txt', 'state/name.txt')
+for _,file in ipairs(files) do
+  copyFile('disk/' .. file, file)
+end
+
+copyFile('disk/startup', 'bootstrap')
+copyFile('disk/replicator', 'startup')
 
 local h = fs.open('state/name.txt', 'r')
 os.setComputerLabel(h.readLine())
