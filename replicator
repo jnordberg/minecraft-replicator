@@ -1244,11 +1244,20 @@ function Replicator:setupFloppy(direction)
     'lib/utils.lua',
   }
 
-  -- sometimes it takes a while for the disk to show up
+  -- Sometimes the disk drive won't show up
+  local diskTries = 0
   local diskPath = nil
   while diskPath == nil do
+    if diskTries > 10 then
+      error('Unable to access disk drive.')
+    end
     diskPath = disk.getMountPath(direction)
+    if diskTries > 1 then
+      self:simpleMove('up')
+      self:simpleMove('down')
+    end
     sleep(0.5)
+    diskTries = diskTries + 1
   end
 
   disk.setLabel(direction, 'rEpliCatoR v.' .. self.state.num_babies)
