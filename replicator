@@ -330,7 +330,7 @@ function Replicator:simpleMove(direction, steps)
     while not successfulMove do
       local block = self:inspect(direction)
       if block then
-        if block.name ~= 'ComputerCraft:CC-TurtleExpanded' then
+        if not isTurtle(block) then
           dig()
         else
           if math.random() < 0.2 then
@@ -1024,7 +1024,13 @@ function Replicator:mine(shafts)
     self:place('cobblestone', 'up')
 
     local startZ = self.position.z
-    while not self:detect('bedrock', 'down') do
+    local below = self:inspect('down')
+
+    if isTurtle(below) then
+      return
+    end
+
+    while below.name ~= 'minecraft:bedrock' do
       self:simpleMove('down')
       spinmine()
     end
