@@ -1024,16 +1024,16 @@ function Replicator:mine(shafts)
     self:place('cobblestone', 'up')
 
     local startZ = self.position.z
-    local below = self:inspect('down')
 
-    if isTurtle(below) then
-      return
-    end
-
-    while below.name ~= 'minecraft:bedrock' do
+    local below
+    repeat
+      if isTurtle(below) then
+        return
+      end
       self:simpleMove('down')
       spinmine()
-    end
+      below = self:inspect('down')
+    until below and below.name == 'minecraft:bedrock'
 
     self:exec [[ !cobblestone U PD U PD U PD U PD U PD ]]
 
