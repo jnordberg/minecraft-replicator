@@ -1432,7 +1432,7 @@ function Replicator:loop()
     end
   end
 
-  if self.state.mining_fails > 2 and self:haveMaterials(relocatingMaterials) then
+  if self.state.mining_fails > 5 and self:haveMaterials(relocatingMaterials) then
     local optionalMaterials = Materials.fromTable {
       'diamond', 'iron_ore', 'sand', 'redstone', 'diamond_pickaxe'
     }
