@@ -1597,14 +1597,6 @@ function Replicator:run()
       h.writeLine(err)
       h.close()
 
-      -- Move out of the way if possible
-      if turtle.getFuelLevel() > 1 then
-        if self.position.z < 0 then
-          self:move('down')
-          self:move('forward')
-        end
-      end
-
       term.clear()
       term.setCursorPos(3, 2)
       term.write('ERROR')
