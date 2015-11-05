@@ -1264,15 +1264,17 @@ function Replicator:setupFloppy(direction)
   local diskTries = 0
   local diskPath = nil
   while diskPath == nil do
-    if diskTries > 10 then
+    if diskTries > 20 then
       error('Unable to access disk drive.')
     end
     diskPath = disk.getMountPath(direction)
-    if diskTries > 1 then
+    if diskTries > 10 then
       self:simpleMove('up')
+      sleep(1)
       self:simpleMove('down')
+      sleep(10)
     end
-    sleep(0.5)
+    sleep(2)
     diskTries = diskTries + 1
   end
 
