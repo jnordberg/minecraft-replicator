@@ -333,15 +333,27 @@ function Replicator:simpleMove(direction, steps)
         if not isTurtle(block) then
           dig()
         else
-          if math.random() < 0.2 then
+          local side
+          if direction == nil or direction == 'forward' then
+            side = 'front'
+          elseif direction == 'up' then
+            side = 'top'
+          else
+            side = 'bottom'
+          end
+          if peripheral.isPresent(side) and not peripheral.call(side, 'isOn') then
+            -- dig turtles that are off
+            dig()
+          elseif math.random() < 0.2 then
+            -- do the anti-collison dance
             if turtle.forward() then
-              sleep(3) turtle.back()
+              sleep(3) while not turtle.back() do end
             elseif turtle.down() then
-              sleep(3) turtle.up()
+              sleep(3) while not turtle.up() do end
             else
               turtle.turnLeft()
               if turtle.forward() then
-                sleep(3) turtle.back()
+                sleep(3) while not turtle.back() do end
               end
               turtle.turnRight()
             end
@@ -1605,8 +1617,13 @@ function Replicator:run()
       term.setCursorPos(1, 7)
 
       self:stop()
-      sleep(600)
-      os.reboot()
+
+      if turtle.getFuelLevel() == 0 then
+        os.shutdown()
+      else
+        sleep(600)
+        os.reboot()
+      end
     end
   end
 end
