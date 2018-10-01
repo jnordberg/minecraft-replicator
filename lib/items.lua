@@ -1,4 +1,4 @@
-
+require('class')
 Item = class('Item')
 Materials = class('Materials')
 Recipe = class('Recipe')
